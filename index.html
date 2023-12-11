@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem dos personagens</title>
+    <link rel="stylesheet" href="./style/index.css">
+</head>
+
+<body>
+    <h1>API de Rick and Morty</h1>
+    <form>
+        <input type="text" placeholder="Pesquise">
+    </form>
+    <div class="main-container">
+        <div class="container_cards">
+            <div id="cartoes_personagens"></div>
+        </div>
+        <div class="container_image_rick_morty">
+
+            <img class="image_rick_morty" src="assets/rick-and-morty-portal-shoes-white-clothing-zavvi-23.png"
+                alt="Rick and Morty" srcset="">
+        </div>
+    </div>
+
+    <div id="personagens"></div>
+
+
+    <button onclick="diminuirPagina()">Diminuir Página</button>
+    <div id="botoes"></div>
+    <button onclick="aumentarPagina()">Aumentar Página</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="src/index.js"></script>
+</body>
+
+</html>

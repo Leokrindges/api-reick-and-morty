@@ -1,0 +1,118 @@
+body {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    text-align: center;
+    color: green;
+    font-size: 80px;
+}
+
+form {
+    text-align: center
+}
+input{
+    font-size: 20px;
+    width: 800px;
+    margin: 0px 0px 50px 0px;
+    padding-left: 8px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.container_cards{
+    display: flex;
+    justify-content: center;  
+}
+
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card_personagem {
+    margin: 35px 0px 35px 0px;
+    margin-right: 15%;
+    display: inline-block;
+    width: 345px;
+    height: 150px;
+}
+
+.imagem_personagem {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+}
+
+.titulo_card {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: green;
+    margin-top: 08px;
+    position: absolute;
+    margin-left: 160px;
+}
+
+.status_persongem {
+    font-weight: bold;
+    margin-top: 40px;
+    margin-left: 180px;
+    font-size: 20px;
+
+}
+
+.color_status_vivo {
+    margin-top: 7px;
+    margin-left: -20px;
+    position: absolute;
+    border-radius: 999999px;
+    background-color: #62EC52;
+    border: 1px solid #62EC52;
+    width: 10px;
+    height: 10px;
+}
+
+.color_status_desconhecido {
+    margin-top: 7px;
+    margin-left: -20px;
+    position: absolute;
+    border-radius: 999999px;
+    background-color: gray;
+    border: 1px solid gray;
+    width: 10px;
+    height: 10px;
+}
+
+.color_status_morto {
+    margin-top: 7px;
+    margin-left: -20px;
+    position: absolute;
+    border-radius: 999999px;
+    background-color: red;
+    border: 1px solid red;
+    width: 10px;
+    height: 10px;
+}
+
+.hr {
+    border-style: solid;
+    border-color: #62EC52;
+    width: 989px;
+    margin-left: 0%;
+}
+
+.container_image_rick_morty {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.image_rick_morty {
+    width: 300px;
+    height: 300px;
+}

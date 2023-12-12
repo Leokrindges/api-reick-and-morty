@@ -1,5 +1,6 @@
 let pagina = 1
 let quantidadeDePaginas
+let contaQuantidadeDePaginas
 let contaPersonagens = 0
 let statusPersonagen = ''
 let morto
@@ -12,8 +13,6 @@ const containerbotoes = document.getElementById("botoes")
 const instance = axios.create({
     baseURL: "https://rickandmortyapi.com/api",
 })
-
-carregarPersonagens()
 
 function aumentarPagina() {
     if (pagina !== quantidadeDePaginas) {
@@ -29,13 +28,32 @@ function diminuirPagina() {
     }
 }
 
-carregarPersonagens()
+function selecionarPagina(novaPagina) {
+    pagina = novaPagina
+    carregarPersonagens()    
+}
+
+async function carregamentoInicialPersonagens() {
+    await carregarPersonagens()
+    if (quantidadeDePaginas == 3) {
+                
+    }
+
+    for (let i = 0; i < quantidadeDePaginas; i++) {
+        const botaoPagina = document.createElement('button')
+        botaoPagina.innerHTML = i + 1
+        botaoPagina.addEventListener('click', () => { selecionarPagina(i + 1) })
+
+        containerbotoes.appendChild(botaoPagina)
+    }
+}
 async function carregarPersonagens() {
 
     try {
-        const resposta = await instance.get(`/character`)
+        const resposta = await instance.get(`/character?page=${pagina}`)
         console.log(resposta);
         const personagens = resposta.data.results
+        quantidadeDePaginas = resposta.data.info.count
 
         const hr = '<hr class="hr">'
 
@@ -45,6 +63,7 @@ async function carregarPersonagens() {
                 cartoesPersonagensEL.innerHTML += hr
                 contaPersonagens = 0
             }
+
             //verifica se o personagem está vivo, morto ou desconhecido
             if (personagen.status === 'Alive') {
                 statusPersonagen = '<span class="color_status_vivo"></span>'
@@ -72,5 +91,6 @@ async function carregarPersonagens() {
     } catch (error) {
         console.log(error);
     }
-
 }
+
+carregamentoInicialPersonagens()

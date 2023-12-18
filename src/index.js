@@ -1,10 +1,13 @@
 let pagina = 1
 let quantidadeDePaginas
 let contaQuantidadeDePaginas
+let count
 let contaPersonagens = 0
 let statusPersonagen = ''
 let morto
 let desconhecido
+let botaoPagina;
+let result = []
 
 const cartoesPersonagensEL = document.getElementById("cartoes_personagens")
 const containerPersonagens = document.getElementById("personagens")
@@ -17,6 +20,10 @@ const instance = axios.create({
 function aumentarPagina() {
     if (pagina !== quantidadeDePaginas) {
         pagina++
+
+        containerbotoes.innerHTML = ''
+        paginacao(pagina)
+
         carregarPersonagens()
     }
 }
@@ -24,36 +31,74 @@ function aumentarPagina() {
 function diminuirPagina() {
     if (pagina > 1) {
         pagina--
+        containerbotoes.innerHTML = ''
+
+        paginacao(pagina)
+
         carregarPersonagens()
     }
 }
 
 function selecionarPagina(novaPagina) {
     pagina = novaPagina
-    carregarPersonagens()    
+    paginacao(pagina)
 }
+
+function paginacao(novaPagina) {
+    pagina = novaPagina
+
+    if (pagina === quantidadeDePaginas - 1) {
+        result = [1, quantidadeDePaginas - 3, quantidadeDePaginas - 2, pagina, quantidadeDePaginas]
+    } else if (pagina > 2 && pagina < quantidadeDePaginas) {
+        result = [1, pagina - 1, pagina, pagina + 1, quantidadeDePaginas]
+    }
+    else if (pagina === quantidadeDePaginas) {
+        result = [1, pagina - 3, pagina - 2, pagina - 1, quantidadeDePaginas]
+    } else {
+        result = [1, 2, 3, 4, quantidadeDePaginas]
+    }
+
+    containerbotoes.innerHTML = ''
+
+    for (let i = 0; i < result.length; i++) {
+        botaoPagina = document.createElement('button')
+        botaoPagina.innerHTML = result[i]
+        botaoPagina.addEventListener('click', () => { paginacao(result[i]) })
+        containerbotoes.appendChild(botaoPagina)
+    }
+
+    carregarPersonagens()
+}
+
 
 async function carregamentoInicialPersonagens() {
     await carregarPersonagens()
-    if (quantidadeDePaginas == 3) {
-                
-    }
+    containerbotoes.innerHTML = ''
 
     for (let i = 0; i < quantidadeDePaginas; i++) {
-        const botaoPagina = document.createElement('button')
-        botaoPagina.innerHTML = i + 1
-        botaoPagina.addEventListener('click', () => { selecionarPagina(i + 1) })
+        if (i < 4) {
+            botaoPagina = document.createElement('button')
+            botaoPagina.innerHTML = i + 1
+            botaoPagina.addEventListener('click', () => { paginacao(i + 1) })
+            containerbotoes.appendChild(botaoPagina)
+        }
 
-        containerbotoes.appendChild(botaoPagina)
+        if (i === 4) {
+            botaoPagina = document.createElement('button')
+            botaoPagina.innerHTML = quantidadeDePaginas
+            botaoPagina.addEventListener('click', () => { paginacao(quantidadeDePaginas) })
+            containerbotoes.appendChild(botaoPagina)
+        }
     }
 }
-async function carregarPersonagens() {
 
+async function carregarPersonagens() {
     try {
         const resposta = await instance.get(`/character?page=${pagina}`)
-        console.log(resposta);
         const personagens = resposta.data.results
-        quantidadeDePaginas = resposta.data.info.count
+        quantidadeDePaginas = resposta.data.info.pages
+        count = resposta.data.info.count
+        cartoesPersonagensEL.innerHTML = ''
 
         const hr = '<hr class="hr">'
 

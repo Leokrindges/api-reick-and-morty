@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 h1 {
     text-align: center;
     color: green;
@@ -14,7 +15,8 @@ h1 {
 form {
     text-align: center
 }
-input{
+
+input {
     font-size: 20px;
     width: 800px;
     margin: 0px 0px 50px 0px;
@@ -23,16 +25,25 @@ input{
     border-radius: 10px;
 }
 
-.container_cards{
+.paginacao {
     display: flex;
-    justify-content: center;  
+    justify-content: center;
 }
 
-.container {
-    min-height: 100vh;
+button {
+    background-color: #62EC52;
+    border: 1px solid #62EC52;
+    margin-right: 5px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 40px;
+}
+
+.container_cards {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .card_personagem {
@@ -59,10 +70,11 @@ input{
 }
 
 .status_persongem {
+    width: 250px;
     font-weight: bold;
     margin-top: 40px;
     margin-left: 180px;
-    font-size: 20px;
+    font-size: 18px;
 
 }
 
@@ -115,4 +127,33 @@ input{
 .image_rick_morty {
     width: 300px;
     height: 300px;
+}
+
+.p {
+    padding-top: 125px;
+    color: #7C7C7C;
+}
+
+.span {
+    font-size: 25px;
+    font-weight: bold;
+    margin-right: 100px;
+}
+
+.rodape {
+    text-align: center;
+    height: 250px;
+    background-color: #1F2821;
+}
+
+footer {
+    padding-bottom: 10px;
+    font-size: 25px;
+    text-align: center;
+    background-color: #1F2821;
+    color:#7C7C7C;
+}
+
+.footerNome {
+    color: white;
 }

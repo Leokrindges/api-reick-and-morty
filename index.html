@@ -13,21 +13,25 @@
     <form>
         <input type="text" placeholder="Pesquise">
     </form>
-    <div class="container">
-        <div class="container_cards">
-            <div id="cartoes_personagens"></div>
-        </div>
-        <div class="container_image_rick_morty">
-
-            <img class="image_rick_morty" src="assets/rick-and-morty-portal-shoes-white-clothing-zavvi-23.png"
-                alt="Rick and Morty" srcset="">
-        </div>
+    <div class="container_cards">
+        <div id="cartoes_personagens"></div>
     </div>
-    <button onclick="diminuirPagina()">Diminuir Página</button>
-    <div id="botoes"></div>
-    <button onclick="aumentarPagina()">Aumentar Página</button>
-
+    <div class="paginacao">
+        <button onclick="diminuirPagina()">Anterior</button>
+        <div id="botoes"></div>
+        <button onclick="aumentarPagina()">Próxima</button>
+    </div>
+    <div class="container_image_rick_morty">
+        <img class="image_rick_morty" src="assets/rick-and-morty-portal-shoes-white-clothing-zavvi-23.png"
+            alt="Rick and Morty" srcset="">
+    </div>
     <div id="personagens"></div>
+
+    <div class="rodape">
+        <p class="p"><span class="span" id="personagen"></span><span class="span" id="localizacao"></span><span
+                class="span" id="episodio"></span></p>
+    </div>
+    <footer>Desenvolvido por: <span class="footerNome">Leonardo Krindges</span> em 2023</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="src/index.js"></script>

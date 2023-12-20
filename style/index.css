@@ -6,8 +6,20 @@ body {
     padding: 0;
 }
 
+.header {
+    display: flex;
+    flex-direction: column;
+}
+
+.icon {
+    width: 75px;
+    height: 75px;
+    margin: 10px 0px 0px 10px;
+}
+
 h1 {
-    text-align: center;
+    display: flex;
+    align-self: center;
     color: green;
     font-size: 80px;
 }
@@ -151,7 +163,7 @@ footer {
     font-size: 25px;
     text-align: center;
     background-color: #1F2821;
-    color:#7C7C7C;
+    color: #7C7C7C;
 }
 
 .footerNome {

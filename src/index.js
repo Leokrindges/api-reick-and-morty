@@ -2,7 +2,6 @@ let pagina = 1
 let quantidadeDePaginas
 let contaQuantidadeDePaginas
 let count
-let contaPersonagens = 0
 let statusPersonagen = ''
 let morto
 let desconhecido
@@ -112,7 +111,9 @@ async function carregarPersonagens() {
 
         const hr = '<hr class="hr">'
 
+        let contaPersonagens = 0
         personagens.forEach((personagen) => {
+            
             //separa os personagens de dois em dois
             if (contaPersonagens == 2) {
                 cartoesPersonagensEL.innerHTML += hr

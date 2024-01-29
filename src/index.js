@@ -8,162 +8,291 @@ let desconhecido
 let botaoPagina;
 let result = []
 
-const personagenEl = document.getElementById("personagen")
-const localizacaoEl = document.getElementById("localizacao")
-const episodioEl = document.getElementById("episodio")
 const cartoesPersonagensEL = document.getElementById("cartoes_personagens")
 const containerPersonagens = document.getElementById("personagens")
-const containerbotoes = document.getElementById("botoes")
+const containerbotoes = document.getElementById("botoes_paginacao")
 
 const instance = axios.create({
     baseURL: "https://rickandmortyapi.com/api",
 })
 
-function aumentarPagina() {
+async function carregarPersonagens() {
+    try {
+        carregarLocalizacoes();
+        carregarEpisodios();
+
+        const resposta = await instance.get(`/character?page=${pagina}`);
+        const personagens = resposta.data.results;
+        console.log(resposta);
+
+        quantidadeDePaginas = resposta.data.info.pages;
+
+        limparElemento(cartoesPersonagensEL);
+        paginacao()
+
+        personagens.forEach((personagem) => {
+            const cardElement = criarElementoCartao(personagem);
+            cartoesPersonagensEL.appendChild(cardElement);
+        });
+
+        mostraTotalPersonagens(resposta.data.info.count)
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function incrementarPagina() {
     if (pagina !== quantidadeDePaginas) {
         pagina++
         containerbotoes.innerHTML = ''
-        paginacao(pagina)
         carregarPersonagens()
+        rolarTelaTopo()
     }
 }
 
-function diminuirPagina() {
+
+function decrementarPagina() {
     if (pagina > 1) {
         pagina--
         containerbotoes.innerHTML = ''
-        paginacao(pagina)
+        paginacao()
         carregarPersonagens()
+        rolarTelaTopo()
     }
 }
 
-function paginacao(novaPagina) {
-    pagina = novaPagina
-    console.log(pagina);
-
-    //faz a paginação dos botões, para ficar mostrando a pagina anterior e posterior à página que esta selecionada
-    if (pagina === quantidadeDePaginas - 1) {
-        result = [1, quantidadeDePaginas - 3, quantidadeDePaginas - 2, pagina, quantidadeDePaginas]
-    }
-    else if (pagina > 2 && pagina < quantidadeDePaginas) {
-        result = [1, pagina - 1, pagina, pagina + 1, quantidadeDePaginas]
-    }
-    else if (pagina === quantidadeDePaginas) {
-        result = [1, pagina - 3, pagina - 2, pagina - 1, quantidadeDePaginas]
-    }
-    else {
-        result = [1, 2, 3, 4, quantidadeDePaginas]
-    }
-
-    containerbotoes.innerHTML = ''
-
-    // percore o array result e cria os novos botões usando os valores que estão setados dentro do array result
-    for (let i = 0; i < result.length; i++) {
-
-        botaoPagina = document.createElement('button')
-        botaoPagina.setAttribute('style', 'background-color: #62EC52; border:1px solid #62EC52; margin-right: 5px; width: 35px; height: 30px; border-radius: 5px; font-size:20px; margin-top: 40px;')
-        botaoPagina.innerHTML = result[i]
-        botaoPagina.addEventListener('click', () => { paginacao(result[i]) })
-        containerbotoes.appendChild(botaoPagina)
-
-        //colocar cor no botão que esta selecionado
-        if (result[i] === pagina) {
-            botaoPagina.setAttribute('style', 'background-color: green; border:1px solid green; margin-right: 5px; width: 35px; height: 30px; border-radius: 5px; font-size:20px; margin-top: 40px;')
-        }
+function botaoPosterior() {
+    if (pagina == 1) {
+        pagina = 3
+    } else if (pagina >= 3) {
+        pagina++
+    } else {
+        pagina = 3
     }
     carregarPersonagens()
+    rolarTelaTopo()
+}
+
+
+//funcao para rolar a tela pro topo
+function rolarTelaTopo() {
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    })
 }
 
 async function carregamentoInicialPersonagens() {
     await carregarPersonagens()
+}
+
+function paginacao() {
+    console.log(pagina);
     containerbotoes.innerHTML = ''
 
-    for (let i = 0; i < quantidadeDePaginas; i++) {
-        //cria os botoes do 1 ao 4
-        if (i < 4) {
-            botaoPagina = document.createElement('button')
-            botaoPagina.setAttribute('style', 'background-color: #62EC52; border:1px solid #62EC52; margin-right: 5px; width: 35px; height: 30px; border-radius: 5px; font-size:20px; margin-top: 25px;')
-            botaoPagina.innerHTML = i + 1
-            botaoPagina.addEventListener('click', () => { paginacao(i + 1) })
-            containerbotoes.appendChild(botaoPagina)
-        }
+    // Seleciona o elemento pai
+    const navElemento = document.createElement("nav");
+    navElemento.setAttribute("aria-label", "Page navigation example");
 
-        //seta a ultima posição do array result com a ultima pagina da api
-        if (i === 5) {
-            botaoPagina = document.createElement('button')
-            botaoPagina.setAttribute('style', 'background-color: #62EC52; border:1px solid #62EC52; margin-right: 5px; width: 35px; height: 30px; border-radius: 5px; font-size:20px; margin-top: 40px;')
-            botaoPagina.innerHTML = quantidadeDePaginas
-            botaoPagina.addEventListener('click', () => { paginacao(quantidadeDePaginas) })
-            containerbotoes.appendChild(botaoPagina)
-        }
+    // Cria a lista de páginas
+    const ulElemento = document.createElement("ul");
+    ulElemento.className = "pagination";
+
+    // Cria o botão "Anterior"
+    const liElementoAnterior = document.createElement("li");
+    liElementoAnterior.className = "page-item";
+    const aElementoAnterior = document.createElement("button");
+    aElementoAnterior.addEventListener('click', () => {
+        decrementarPagina()
+    })
+    aElementoAnterior.className = "page-link";
+    aElementoAnterior.innerHTML = "Anterior";
+    liElementoAnterior.appendChild(aElementoAnterior);
+    ulElemento.appendChild(liElementoAnterior);
+
+    // Cria botões do meio
+    //Pimeiro botão
+    const liElemento1 = document.createElement("li");
+    liElemento1.className = "page-item active";
+    const aElemento1 = document.createElement("button");
+    aElemento1.addEventListener('click', () => {
+        decrementarPagina()
+    })
+    aElemento1.className = "page-link";
+    if (pagina > 1) {
+        aElemento1.innerHTML = pagina - 1;
+    } else {
+        aElemento1.innerHTML = 1
+    }
+    liElemento1.appendChild(aElemento1);
+    ulElemento.appendChild(liElemento1);
+
+    //segundo botão
+    const liElemento2 = document.createElement("li");
+    liElemento2.className = "page-item";
+    const aElemento2 = document.createElement("button");
+    aElemento2.addEventListener('click', () => {
+        incrementarPagina()
+    })
+    aElemento2.className = "page-link";
+    if (pagina > 1) {
+        aElemento2.innerHTML = pagina;
+    } else {
+        aElemento2.innerHTML = 2
+    }
+    liElemento2.appendChild(aElemento2);
+    ulElemento.appendChild(liElemento2);
+
+    //Terceiro botão
+    const liElemento3 = document.createElement("li");
+    liElemento3.className = "page-item";
+    const aElemento3 = document.createElement("button");
+    aElemento3.addEventListener('click', () => {
+        botaoPosterior()
+    })
+    aElemento3.className = "page-link";
+    if (pagina > 1) {
+        aElemento3.innerHTML = pagina + 1;
+    } else {
+        aElemento3.innerHTML = 3
+    }
+    liElemento3.appendChild(aElemento3);
+    ulElemento.appendChild(liElemento3);
+
+    // Cria o botão "Próxima"
+    const liProximoElemento = document.createElement("li");
+    liProximoElemento.className = "page-item";
+    const aProximoElemento = document.createElement("button");
+    aProximoElemento.addEventListener('click', () => {
+        incrementarPagina()
+    })
+    aProximoElemento.className = "page-link";
+    aProximoElemento.innerHTML = "Próxima";
+    liProximoElemento.appendChild(aProximoElemento);
+    ulElemento.appendChild(liProximoElemento);
+
+    // Adiciona a lista de páginas ao elemento pai
+    navElemento.appendChild(ulElemento);
+    containerbotoes.appendChild(navElemento)
+}
+
+
+function criarElementoCartao(personagem) {
+    const cardElement = document.createElement('div');
+    cardElement.className = 'card my-2 mx-2';
+    cardElement.style = 'width:10rem; height:20rem;';
+
+    const imageElement = document.createElement('img');
+    imageElement.src = personagem.image;
+    imageElement.className = 'card-img-top';
+    imageElement.alt = 'Imagem do personagem';
+
+    const cardBodyElement = document.createElement('div');
+    cardBodyElement.className = 'card-body';
+
+    const titleElement = document.createElement('h6');
+    titleElement.className = 'card-title fs-5';
+    titleElement.textContent = personagem.name;
+
+    // const statusElement = document.createElement('p');
+    // statusElement.className = 'card-text fs-6';
+    // statusElement.innerHTML = obterIconeStatus(personagem.status);
+
+    // const statusPersonagemElement = document.createElement('span')
+    // statusPersonagemElement.className = 'ms-3 fs-6'
+    // statusPersonagemElement.innerHTML = `${personagem.status} - ${personagem.species}`
+
+
+    const buttonElement = document.createElement('button');
+    buttonElement.type = 'button';
+    buttonElement.addEventListener('click', () => { modalPersonagem(personagem) })
+    buttonElement.id = 'botao-detalhes';
+    buttonElement.className = 'btn btn-primary';
+    buttonElement.setAttribute('data-bs-toggle', 'modal');
+    buttonElement.setAttribute('data-bs-target', '#modal_detalhes');
+    buttonElement.style = '--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;';
+    buttonElement.textContent = 'Mais detalhes';
+
+    cardBodyElement.appendChild(titleElement);
+    // statusElement.appendChild(statusPersonagemElement)
+    // cardBodyElement.appendChild(statusElement);
+    cardBodyElement.appendChild(buttonElement);
+
+    cardElement.appendChild(imageElement);
+    cardElement.appendChild(cardBodyElement);
+
+    return cardElement;
+}
+
+function limparElemento(elemento) {
+    while (elemento.firstChild) {
+        elemento.removeChild(elemento.firstChild);
     }
 }
 
-async function carregarPersonagens() {
-    carregarLocalizações()
-    carregarEpisodios()
-    try {
-        const resposta = await instance.get(`/character?page=${pagina}`)
-        const personagens = resposta.data.results
-        quantidadeDePaginas = resposta.data.info.pages
-        count = resposta.data.info.count
-        cartoesPersonagensEL.innerHTML = ''
+function modalPersonagem(personagem) {
+    const mostraModalDetalhes = document.getElementById('detalhes')
+    const statusPersonagen = obterIconeStatus(personagem.status);
 
-        const hr = '<hr class="hr">'
+    const modalContent = `
+        <div class="row g-0">
+            <div class="col-6 col-md-5">
+                <img src="${personagem.image}" class="img-fluid rounded-start" alt="Imagem do personagem">
+            </div>
+            <div class="col-6 col-md-7 bg-dark-subtle">
+                <div class="card-body">
+                    <h4 class="card-title ">${personagem.name}</h4>
+                    <p class="card-text">${statusPersonagen}<span class="ms-3">${personagem.status}</span> - ${personagem.species}</p>
+                    <h6 class="card-title mb-0 ms-3">Localização:</h6>
+                    <p class="card-text ms-3">${personagem.location.name}</p>
+                </div>
+            </div>
+        </div>
+    `;
+    mostraModalDetalhes.innerHTML = modalContent;
+}
 
-        let contaPersonagens = 0
-        personagens.forEach((personagen) => {
-            
-            //separa os personagens de dois em dois
-            if (contaPersonagens == 2) {
-                cartoesPersonagensEL.innerHTML += hr
-                contaPersonagens = 0
-            }
+function mostraTotalPersonagens (quantidade) {
+    const totalPersonagens = document.getElementById("personagen")
+    totalPersonagens.className = 'text-light'
+    totalPersonagens.innerHTML = ` ${quantidade} `;
 
-            //verifica se o personagem está vivo, morto ou desconhecido
-            if (personagen.status === 'Alive') {
-                statusPersonagen = '<span class="color_status_vivo"></span>'
-            }
+}
 
-            if (personagen.status === "unknown") {
-                statusPersonagen = '<span class="color_status_desconhecido"></span>'
-            }
-
-            if (personagen.status === "Dead") {
-                statusPersonagen = '<span class="color_status_morto"></span>'
-            }
-
-            const cartao = `
-                <div class="card_personagem">
-                     <h2 class="titulo_card">${personagen.name}</h2>
-                    <img class="imagem_personagem" src="${personagen.image}" alt="imagen_personagem" srcset="">
-                     <p class="status_persongem">${statusPersonagen}${personagen.status} - ${personagen.species}</p>
-                 </div>
-             `
-            contaPersonagens++
-            cartoesPersonagensEL.innerHTML += cartao
-        });
-
-        personagenEl.innerHTML = `PERSONAGENS: ${count}`
-
-    } catch (error) {
-        console.log(error);
+function obterIconeStatus(status) {
+    switch (status) {
+        case 'Alive':
+            return '<span class="color_status_vivo"></span>';
+        case 'unknown':
+            return '<span class="color_status_desconhecido"></span>';
+        case 'Dead':
+            return '<span class="color_status_morto"></span>';
+        default:
+            return '';
     }
 }
 
 async function carregarEpisodios() {
+    const episodioEl = document.getElementById("episodio")
+    episodioEl.classList = 'text-light'
+
     try {
         const resposta = await instance.get(`/episode`)
-        episodioEl.innerHTML = `EPISÓDIOS: ${resposta.data.info.count}`
+        episodioEl.innerHTML = ` ${resposta.data.info.count} `
     } catch (error) {
         console.log(error);
     }
 }
 
-async function carregarLocalizações() {
+async function carregarLocalizacoes() {
+    const localizacaoEl = document.getElementById("localizacao")
+    localizacaoEl.classList = 'text-light'
+
     try {
         const resposta = await instance.get(`/location`)
-        localizacaoEl.innerHTML = `LOCALIZAÇÕES: ${resposta.data.info.count}`
+        localizacaoEl.innerHTML += ` ${resposta.data.info.count} `
     } catch (error) {
         console.log(error);
     }

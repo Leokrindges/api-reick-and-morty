@@ -5,37 +5,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem dos personagens</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./style/index.css">
 </head>
 
-<body><div class="header">
-    <img class="icon" src="assets/RICK_MORTY_ICON.png" alt="icone Rick and Morty" srcset="">
-    <h1>API de Rick and Morty</h1>
-</div>
-    <form>
-        <input type="text" placeholder="Pesquise">
-    </form>
-    <div class="container_cards">
-        <div id="cartoes_personagens"></div>
-    </div>
-    <div class="paginacao">
-        <button onclick="diminuirPagina()">Anterior</button>
-        <div id="botoes"></div>
-        <button onclick="aumentarPagina()">Próxima</button>
-    </div>
-    <div class="container_image_rick_morty">
-        <img class="image_rick_morty" src="assets/rick-and-morty-portal-shoes-white-clothing-zavvi-23.png"
-            alt="Rick and Morty" srcset="">
-    </div>
-    <div id="personagens"></div>
+<body>
+    <header>
+        <div class="container-fuild d-flex justify-content-center align-items-center cabecalho">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <img class=" position-absolute top-0 start-0 icon" src="assets/RICK_MORTY_ICON.png"
+                            alt="icone Rick and Morty" srcset="">
+                    </div>
+                    <div class="row flex-column text-center">
+                        <div class="col">
+                            <div class="p-2">
+                                <h1 class="display-3 titulo"><b>API de Rick and Morty</b></h1>
+                            </div>
+                        </div>
+                        <div class="col d-flex justify-content-center">
+                            <label for="exampleFormControlInput1" class="form-label"></label>
+                            <input type="text" class="form-control w-50" id="exampleFormControlInput1"
+                                placeholder="Pesquisar">
+                        </div>
+                    </div>
+                </div>
 
-    <div class="rodape">
-        <p class="p"><span class="span" id="personagen"></span><span class="span" id="localizacao"></span><span
-                class="span" id="episodio"></span></p>
+            </div>
+        </div>
+    </header>
+
+    <main class="fundo">
+        <div class="container-fluid v-50">
+            <div class="row justify-content-center container_cards" id="cartoes_personagens">
+                <!-- Cartões gerados no DOM -->
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <div id="botoes_paginacao"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div
+            class="container-fluid flex-column d-flex align-items-center justify-content-center text-center rodape fs-4">
+            <div class="row align-items-center w-100">
+                <div class="col-12 col-md-4 ">
+                    <p class="cor1">PERSONAGENS: <span id="personagen"></span></p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p class="cor1">LOCALIZAÇÕES: <span id="localizacao"></span></p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p class="cor1">EPISÓDIOS: <span id="episodio"></span></p>
+                </div>
+            </div>
+            <div class="row text-light">
+                <div class="col">
+                    <p class="cor1">Desenvolvido por: <span class="text-light">Leonardo Krindges</span> em 2023</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_detalhes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detalhes</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card mb-3" id="detalhes" style="max-width: 540px;">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <footer>Desenvolvido por: <span class="footerNome">Leonardo Krindges</span> em 2023</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="src/index.js"></script>
 </body>
 

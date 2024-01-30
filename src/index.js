@@ -28,7 +28,7 @@ async function carregarPersonagens() {
         quantidadeDePaginas = resposta.data.info.pages;
 
         limparElemento(cartoesPersonagensEL);
-        paginacao()
+        paginacao(quantidadeDePaginas)
 
         personagens.forEach((personagem) => {
             const cardElement = criarElementoCartao(personagem);
@@ -51,12 +51,18 @@ function incrementarPagina() {
     }
 }
 
+function outra(quantidadeDePaginas) {
+    pagina = pagina - 2
+    paginacao(quantidadeDePaginas)
+    carregarPersonagens()
+}
 
-function decrementarPagina() {
+
+function decrementarPagina(quantidadeDePaginas) {
     if (pagina > 1) {
         pagina--
         containerbotoes.innerHTML = ''
-        paginacao()
+        paginacao(quantidadeDePaginas)
         carregarPersonagens()
         rolarTelaTopo()
     }
@@ -88,7 +94,7 @@ async function carregamentoInicialPersonagens() {
     await carregarPersonagens()
 }
 
-function paginacao() {
+function paginacao(quantidadeDePaginas) {
     console.log(pagina);
     containerbotoes.innerHTML = ''
 
@@ -105,7 +111,7 @@ function paginacao() {
     liElementoAnterior.className = "page-item";
     const aElementoAnterior = document.createElement("button");
     aElementoAnterior.addEventListener('click', () => {
-        decrementarPagina()
+        decrementarPagina(quantidadeDePaginas)
     })
     aElementoAnterior.className = "page-link";
     aElementoAnterior.innerHTML = "Anterior";
@@ -113,19 +119,25 @@ function paginacao() {
     ulElemento.appendChild(liElementoAnterior);
 
     // Cria botões do meio
-    //Pimeiro botão
+    //Primeiro botão
     const liElemento1 = document.createElement("li");
     liElemento1.className = "page-item active";
     const aElemento1 = document.createElement("button");
     aElemento1.addEventListener('click', () => {
-        decrementarPagina()
+        if (pagina === quantidadeDePaginas) {
+            outra(quantidadeDePaginas)
+            return
+        }
+        decrementarPagina(quantidadeDePaginas)
     })
     aElemento1.className = "page-link";
     if (pagina > 1) {
         aElemento1.innerHTML = pagina - 1;
     } else {
         aElemento1.innerHTML = 1
+        liElementoAnterior.className = "disabled"
     }
+
     liElemento1.appendChild(aElemento1);
     ulElemento.appendChild(liElemento1);
 
@@ -134,14 +146,22 @@ function paginacao() {
     liElemento2.className = "page-item";
     const aElemento2 = document.createElement("button");
     aElemento2.addEventListener('click', () => {
-        incrementarPagina()
+        if (pagina === 1) {
+            incrementarPagina()
+        }
+        if (pagina === quantidadeDePaginas) {
+            decrementarPagina()
+        }
     })
     aElemento2.className = "page-link";
     if (pagina > 1) {
         aElemento2.innerHTML = pagina;
+        liElemento2.className = 'active'
+        liElemento1.classList.remove('active')
     } else {
         aElemento2.innerHTML = 2
     }
+
     liElemento2.appendChild(aElemento2);
     ulElemento.appendChild(liElemento2);
 
@@ -158,6 +178,13 @@ function paginacao() {
     } else {
         aElemento3.innerHTML = 3
     }
+    if (pagina === quantidadeDePaginas) {
+        aElemento3.innerHTML = quantidadeDePaginas
+        aElemento2.innerHTML = quantidadeDePaginas - 1
+        aElemento1.innerHTML = quantidadeDePaginas - 2
+        liElemento3.className = 'active'
+        liElemento2.classList.remove('active')
+    }
     liElemento3.appendChild(aElemento3);
     ulElemento.appendChild(liElemento3);
 
@@ -168,6 +195,10 @@ function paginacao() {
     aProximoElemento.addEventListener('click', () => {
         incrementarPagina()
     })
+
+    if (pagina === quantidadeDePaginas) {
+        liProximoElemento.className = "disabled"
+    }
     aProximoElemento.className = "page-link";
     aProximoElemento.innerHTML = "Próxima";
     liProximoElemento.appendChild(aProximoElemento);
@@ -254,7 +285,7 @@ function modalPersonagem(personagem) {
     mostraModalDetalhes.innerHTML = modalContent;
 }
 
-function mostraTotalPersonagens (quantidade) {
+function mostraTotalPersonagens(quantidade) {
     const totalPersonagens = document.getElementById("personagen")
     totalPersonagens.className = 'text-light'
     totalPersonagens.innerHTML = ` ${quantidade} `;
@@ -292,7 +323,7 @@ async function carregarLocalizacoes() {
 
     try {
         const resposta = await instance.get(`/location`)
-        localizacaoEl.innerHTML += ` ${resposta.data.info.count} `
+        localizacaoEl.innerHTML = ` ${resposta.data.info.count} `
     } catch (error) {
         console.log(error);
     }

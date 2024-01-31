@@ -211,50 +211,56 @@ function paginacao(quantidadeDePaginas) {
 
 
 function criarElementoCartao(personagem) {
-    const cardElement = document.createElement('div');
-    cardElement.className = 'card my-2 mx-2';
-    cardElement.style = 'width:10rem; height:20rem;';
+    //crio o elemento col
+    const colElemento = document.createElement('div');
+colElemento.className = 'col-12 col-md-6 col-lg-4 d-flex justify-content-center';
 
-    const imageElement = document.createElement('img');
-    imageElement.src = personagem.image;
-    imageElement.className = 'card-img-top';
-    imageElement.alt = 'Imagem do personagem';
+const cardElement = document.createElement('div');
+cardElement.className = 'card my-2 mx-2';
+cardElement.style = 'width: 20rem;';
 
-    const cardBodyElement = document.createElement('div');
-    cardBodyElement.className = 'card-body';
+const imageElement = document.createElement('img');
+imageElement.src = personagem.image;
+imageElement.className = 'card-img-top';
+imageElement.alt = 'Imagem do personagem';
 
-    const titleElement = document.createElement('h6');
-    titleElement.className = 'card-title fs-5';
-    titleElement.textContent = personagem.name;
+const cardBodyElement = document.createElement('div');
+cardBodyElement.className = 'card-body';
 
-    // const statusElement = document.createElement('p');
-    // statusElement.className = 'card-text fs-6';
-    // statusElement.innerHTML = obterIconeStatus(personagem.status);
+const titleElement = document.createElement('h6');
+titleElement.className = 'card-title fs-5';
+titleElement.textContent = personagem.name;
 
-    // const statusPersonagemElement = document.createElement('span')
-    // statusPersonagemElement.className = 'ms-3 fs-6'
-    // statusPersonagemElement.innerHTML = `${personagem.status} - ${personagem.species}`
+const statusElement = document.createElement('p');
+statusElement.className = 'card-text fs-6';
+statusElement.innerHTML = obterIconeStatus(personagem.status);
 
+const statusPersonagemElement = document.createElement('span');
+statusPersonagemElement.className = 'fs-6 ms-3';
+statusPersonagemElement.innerHTML = `${personagem.status} - ${personagem.species}`;
 
-    const buttonElement = document.createElement('button');
-    buttonElement.type = 'button';
-    buttonElement.addEventListener('click', () => { modalPersonagem(personagem) })
-    buttonElement.id = 'botao-detalhes';
-    buttonElement.className = 'btn btn-primary';
-    buttonElement.setAttribute('data-bs-toggle', 'modal');
-    buttonElement.setAttribute('data-bs-target', '#modal_detalhes');
-    buttonElement.style = '--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;';
-    buttonElement.textContent = 'Mais detalhes';
+const buttonElement = document.createElement('button');
+buttonElement.type = 'button';
+buttonElement.addEventListener('click', () => { modalPersonagem(personagem) });
+buttonElement.id = 'botao-detalhes';
+buttonElement.className = 'btn btn-primary';
+buttonElement.setAttribute('data-bs-toggle', 'modal');
+buttonElement.setAttribute('data-bs-target', '#modal_detalhes');
+buttonElement.style = '--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;';
+buttonElement.textContent = 'Mais detalhes';
 
-    cardBodyElement.appendChild(titleElement);
-    // statusElement.appendChild(statusPersonagemElement)
-    // cardBodyElement.appendChild(statusElement);
-    cardBodyElement.appendChild(buttonElement);
+cardBodyElement.appendChild(titleElement);
+statusElement.appendChild(statusPersonagemElement);
+cardBodyElement.appendChild(statusElement);
+cardBodyElement.appendChild(buttonElement);
 
-    cardElement.appendChild(imageElement);
-    cardElement.appendChild(cardBodyElement);
+cardElement.appendChild(imageElement);
+cardElement.appendChild(cardBodyElement); // Anexar cardBodyElement ao cardElement
 
-    return cardElement;
+colElemento.appendChild(cardElement); // Anexar cardElement ao colElemento
+
+return colElemento;
+
 }
 
 function limparElemento(elemento) {

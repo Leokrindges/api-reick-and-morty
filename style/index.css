@@ -1,4 +1,4 @@
-main {
+.background {
     background-color: #262626;
 }
 
@@ -64,8 +64,8 @@ main {
 }
 
 .imagem_personagem {
-    width: 150px;
-    height: 150px;
+    width: 80%;
+    margin-left: 10%;
 }
 
 .puff-in-center {

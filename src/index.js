@@ -216,7 +216,7 @@ function criarElementoCartao(personagem) {
 colElemento.className = 'col-12 col-md-6 col-lg-4 d-flex justify-content-center';
 
 const cardElement = document.createElement('div');
-cardElement.className = 'card my-2 mx-2';
+cardElement.className = 'puff-in-center card-shadow-hover card my-2 mx-2';
 cardElement.style = 'width: 20rem;';
 
 const imageElement = document.createElement('img');

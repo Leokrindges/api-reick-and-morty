@@ -1,15 +1,5 @@
-.fundo {
-    background-color: #252525;
-    background-image: url(../assets/FUNDO_2.jpg);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: bottom right;
-    height: 1000px;
-}
-
-.main {
-    height: 100vh; 
-
+main {
+    background-color:#262626;
 }
 
 .icon {
@@ -27,7 +17,7 @@
 }
 
 .color_status_vivo {
-    margin-top: 6px;
+    margin-top: 7px;
     position: absolute;
     border-radius: 999999px;
     background-color: #62EC52;
@@ -68,9 +58,16 @@
 .cor1 {
     color: #4D9F4B;
 }
- .titulo {
+
+.titulo {
     color: #105718;
- }
+}
+
+.imagem_personagem {
+    width: 150px;
+    height: 150px;
+}
+
 
 /* }
 * {
@@ -136,12 +133,6 @@ button {
     margin-right: 15%;
     display: inline-block;
     width: 300px;
-    height: 150px;
-}
-
-.imagem_personagem {
-    position: absolute;
-    width: 150px;
     height: 150px;
 }
 

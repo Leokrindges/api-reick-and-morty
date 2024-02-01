@@ -213,19 +213,19 @@ function paginacao(quantidadeDePaginas) {
 function criarElementoCartao(personagem) {
     //crio o elemento col
     const colElemento = document.createElement('div');
-colElemento.className = 'col-12 col-md-6 col-lg-4 d-flex justify-content-center';
+colElemento.className = 'col-12 col-md-6 col-lg-3 d-flex justify-content-center';
 
 const cardElement = document.createElement('div');
-cardElement.className = 'puff-in-center card-shadow-hover card my-2 mx-2';
-cardElement.style = 'width: 20rem;';
+cardElement.className = 'puff-in-center mt-5 bg-secondary text-white card-shadow-hover card my-2 mx-2';
+cardElement.style = 'width: 80%;';
 
 const imageElement = document.createElement('img');
 imageElement.src = personagem.image;
-imageElement.className = 'card-img-top';
+imageElement.className = 'card-img-top imagem_personagem';
 imageElement.alt = 'Imagem do personagem';
 
 const cardBodyElement = document.createElement('div');
-cardBodyElement.className = 'card-body';
+cardBodyElement.className = 'card-body background border border-top-0 border-success rounded-bottom';
 
 const titleElement = document.createElement('h6');
 titleElement.className = 'card-title fs-5';
@@ -274,7 +274,7 @@ function modalPersonagem(personagem) {
     const statusPersonagen = obterIconeStatus(personagem.status);
 
     const modalContent = `
-        <div class="row g-0">
+        <div class="row">
             <div class="col-6 col-md-5">
                 <img src="${personagem.image}" class="img-fluid rounded-start" alt="Imagem do personagem">
             </div>

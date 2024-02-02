@@ -28,7 +28,7 @@ async function carregarPersonagens() {
         quantidadeDePaginas = resposta.data.info.pages;
 
         limparElemento(cartoesPersonagensEL);
-        paginacao(quantidadeDePaginas)
+        criaElementosPaginacao(quantidadeDePaginas)
 
         personagens.forEach((personagem) => {
             const cardElement = criarElementoCartao(personagem);
@@ -53,7 +53,7 @@ function incrementarPagina() {
 
 function outra(quantidadeDePaginas) {
     pagina = pagina - 2
-    paginacao(quantidadeDePaginas)
+    criaElementosPaginacao(quantidadeDePaginas)
     carregarPersonagens()
 }
 
@@ -62,7 +62,7 @@ function decrementarPagina(quantidadeDePaginas) {
     if (pagina > 1) {
         pagina--
         containerbotoes.innerHTML = ''
-        paginacao(quantidadeDePaginas)
+        criaElementosPaginacao(quantidadeDePaginas)
         carregarPersonagens()
         rolarTelaTopo()
     }
@@ -94,7 +94,7 @@ async function carregamentoInicialPersonagens() {
     await carregarPersonagens()
 }
 
-function paginacao(quantidadeDePaginas) {
+function criaElementosPaginacao(quantidadeDePaginas) {
     console.log(pagina);
     containerbotoes.innerHTML = ''
 
@@ -209,16 +209,14 @@ function paginacao(quantidadeDePaginas) {
     containerbotoes.appendChild(navElemento)
 }
 
-
 function criarElementoCartao(personagem) {
     //crio o elemento col
     const colElemento = document.createElement('div');
-colElemento.className = 'col-12 col-md-6 col-lg-3 d-flex justify-content-center';
+colElemento.className = 'col-12 col-md-6 col-lg-4 my-3 d-flex justify-content-center';
+
 
 const cardElement = document.createElement('div');
-cardElement.className = 'puff-in-center mt-5 bg-secondary text-white card-shadow-hover card my-2 mx-2';
-cardElement.style = 'width: 80%;';
-
+cardElement.className = 'card_hover puff-in-center bg-secondary text-white card my-2 mx-2';
 const imageElement = document.createElement('img');
 imageElement.src = personagem.image;
 imageElement.className = 'card-img-top imagem_personagem';
@@ -255,10 +253,9 @@ cardBodyElement.appendChild(statusElement);
 cardBodyElement.appendChild(buttonElement);
 
 cardElement.appendChild(imageElement);
-cardElement.appendChild(cardBodyElement); // Anexar cardBodyElement ao cardElement
+cardElement.appendChild(cardBodyElement); 
 
-colElemento.appendChild(cardElement); // Anexar cardElement ao colElemento
-
+colElemento.appendChild(cardElement); 
 return colElemento;
 
 }

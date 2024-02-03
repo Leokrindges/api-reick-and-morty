@@ -104,7 +104,7 @@ function criaElementosPaginacao(quantidadeDePaginas) {
 
     // Cria a lista de páginas
     const ulElemento = document.createElement("ul");
-    ulElemento.className = "pagination";
+    ulElemento.className = "botao_paginacao";
 
     // Cria o botão "Anterior"
     const liElementoAnterior = document.createElement("li");
@@ -216,7 +216,7 @@ colElemento.className = 'col-12 col-md-6 col-lg-4 my-3 d-flex justify-content-ce
 
 
 const cardElement = document.createElement('div');
-cardElement.className = 'card_hover puff-in-center bg-secondary text-white card my-2 mx-2';
+cardElement.className = `tamanho_card puff-in-center bg-secondary text-white card my-2 mx-2 ${obterSombraStatusCard(personagem.status)}`;
 const imageElement = document.createElement('img');
 imageElement.src = personagem.image;
 imageElement.className = 'card-img-top imagem_personagem';
@@ -241,7 +241,7 @@ const buttonElement = document.createElement('button');
 buttonElement.type = 'button';
 buttonElement.addEventListener('click', () => { modalPersonagem(personagem) });
 buttonElement.id = 'botao-detalhes';
-buttonElement.className = 'btn btn-primary';
+buttonElement.className = 'btn btn-padrao pulsate-fwd';
 buttonElement.setAttribute('data-bs-toggle', 'modal');
 buttonElement.setAttribute('data-bs-target', '#modal_detalhes');
 buttonElement.style = '--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;';
@@ -303,6 +303,19 @@ function obterIconeStatus(status) {
             return '<span class="color_status_desconhecido"></span>';
         case 'Dead':
             return '<span class="color_status_morto"></span>';
+        default:
+            return '';
+    }
+}
+
+function obterSombraStatusCard(status) {
+    switch (status) {
+        case 'Alive':
+            return 'sombra_card_status_vivo';
+        case 'unknown':
+            return 'sombra_card_status_desconhecido';
+        case 'Dead':
+            return 'sombra_card_status_morto';
         default:
             return '';
     }

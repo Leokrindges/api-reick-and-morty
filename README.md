@@ -6,7 +6,7 @@
 <h2>Modelo da parte de cima da tela</h2>
 <img src="./assets/imagem cabeçalho.png" alt="imagem do cabeçalho">
 
-<h2>Modelo da parte de baixo da tela</h2>
+<h2>Modelo da parte do meio da tela</h2>
 <img src="./assets/imagem main.png" alt="modelo de tela do meio da página">
 
 <h2>Modelo da parte de baixo da tela</h2>

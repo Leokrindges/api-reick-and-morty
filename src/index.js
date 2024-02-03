@@ -1,21 +1,14 @@
-let pagina = 1
-let quantidadeDePaginas
-let contaQuantidadeDePaginas
-let count
-let statusPersonagen = ''
-let morto
-let desconhecido
-let botaoPagina;
-let result = []
+let pagina = 1;
+let quantidadeDePaginas;
+const cartoesPersonagensEL = document.getElementById("cartoes_personagens");
+const containerbotoes = document.getElementById("botoes_paginacao");
 
-const cartoesPersonagensEL = document.getElementById("cartoes_personagens")
-const containerPersonagens = document.getElementById("personagens")
-const containerbotoes = document.getElementById("botoes_paginacao")
-
+//axios para fazer a integração do back-end com o front-end
 const instance = axios.create({
     baseURL: "https://rickandmortyapi.com/api",
-})
+});
 
+//rota onde são carregadas as informações dos personagens
 async function carregarPersonagens() {
     try {
         carregarLocalizacoes();
@@ -23,251 +16,224 @@ async function carregarPersonagens() {
 
         const resposta = await instance.get(`/character?page=${pagina}`);
         const personagens = resposta.data.results;
-        console.log(resposta);
 
         quantidadeDePaginas = resposta.data.info.pages;
 
         limparElemento(cartoesPersonagensEL);
-        criaElementosPaginacao(quantidadeDePaginas)
+        criaElementosPaginacao(quantidadeDePaginas);
 
         personagens.forEach((personagem) => {
-            const cardElement = criarElementoCartao(personagem);
-            cartoesPersonagensEL.appendChild(cardElement);
+            const cardElemento = criarElementoCartao(personagem);
+            cartoesPersonagensEL.appendChild(cardElemento);
         });
 
-        mostraTotalPersonagens(resposta.data.info.count)
+        mostraTotalPersonagens(resposta.data.info.count);
 
     } catch (error) {
         console.log(error);
     }
 }
 
+async function carregamentoInicialPersonagens() {
+    await carregarPersonagens();
+}
+
+// paginação
 function incrementarPagina() {
     if (pagina !== quantidadeDePaginas) {
-        pagina++
-        containerbotoes.innerHTML = ''
-        carregarPersonagens()
-        rolarTelaTopo()
+        pagina++;
+        containerbotoes.innerHTML = '';
+        carregarPersonagens();
+        rolarTelaTopo();
     }
 }
 
-function outra(quantidadeDePaginas) {
-    pagina = pagina - 2
-    criaElementosPaginacao(quantidadeDePaginas)
-    carregarPersonagens()
+// paginação
+function carregarPaginaAnterior(quantidadeDePaginas) {
+    pagina = pagina - 2;
+    criaElementosPaginacao(quantidadeDePaginas);
+    carregarPersonagens();
 }
 
-
+// paginação
 function decrementarPagina(quantidadeDePaginas) {
     if (pagina > 1) {
-        pagina--
-        containerbotoes.innerHTML = ''
-        criaElementosPaginacao(quantidadeDePaginas)
-        carregarPersonagens()
-        rolarTelaTopo()
+        pagina--;
+        containerbotoes.innerHTML = '';
+        criaElementosPaginacao(quantidadeDePaginas);
+        carregarPersonagens();
+        rolarTelaTopo();
     }
 }
 
+// paginação
 function botaoPosterior() {
-    if (pagina == 1) {
-        pagina = 3
+    if (pagina === 1) {
+        pagina = 3;
     } else if (pagina >= 3) {
-        pagina++
+        pagina++;
     } else {
-        pagina = 3
+        pagina = 3;
     }
-    carregarPersonagens()
-    rolarTelaTopo()
+    carregarPersonagens();
+    rolarTelaTopo();
 }
 
-
-//funcao para rolar a tela pro topo
+// Rola tela para o topo
 function rolarTelaTopo() {
-
     window.scrollTo({
         top: 0,
-        behavior: 'smooth'
-    })
+        behavior: 'smooth',
+    });
 }
 
-async function carregamentoInicialPersonagens() {
-    await carregarPersonagens()
-}
-
+// cria os botoes da paginação
 function criaElementosPaginacao(quantidadeDePaginas) {
-    console.log(pagina);
-    containerbotoes.innerHTML = ''
+    containerbotoes.innerHTML = '';
 
-    // Seleciona o elemento pai
     const navElemento = document.createElement("nav");
     navElemento.setAttribute("aria-label", "Page navigation example");
 
-    // Cria a lista de páginas
     const ulElemento = document.createElement("ul");
     ulElemento.className = "botao_paginacao";
 
-    // Cria o botão "Anterior"
     const liElementoAnterior = document.createElement("li");
     liElementoAnterior.className = "page-item";
     const aElementoAnterior = document.createElement("button");
     aElementoAnterior.addEventListener('click', () => {
-        decrementarPagina(quantidadeDePaginas)
-    })
+        decrementarPagina(quantidadeDePaginas);
+    });
     aElementoAnterior.className = "page-link";
     aElementoAnterior.innerHTML = "Anterior";
     liElementoAnterior.appendChild(aElementoAnterior);
     ulElemento.appendChild(liElementoAnterior);
 
-    // Cria botões do meio
-    //Primeiro botão
     const liElemento1 = document.createElement("li");
     liElemento1.className = "page-item active";
     const aElemento1 = document.createElement("button");
     aElemento1.addEventListener('click', () => {
         if (pagina === quantidadeDePaginas) {
-            outra(quantidadeDePaginas)
-            return
+            carregarPaginaAnterior(quantidadeDePaginas);
+            return;
         }
-        decrementarPagina(quantidadeDePaginas)
-    })
+        decrementarPagina(quantidadeDePaginas);
+    });
     aElemento1.className = "page-link";
-    if (pagina > 1) {
-        aElemento1.innerHTML = pagina - 1;
-    } else {
-        aElemento1.innerHTML = 1
-        liElementoAnterior.className = "disabled"
-    }
-
+    aElemento1.innerHTML = (pagina > 1) ? pagina - 1 : 1;
     liElemento1.appendChild(aElemento1);
     ulElemento.appendChild(liElemento1);
 
-    //segundo botão
     const liElemento2 = document.createElement("li");
     liElemento2.className = "page-item";
     const aElemento2 = document.createElement("button");
     aElemento2.addEventListener('click', () => {
         if (pagina === 1) {
-            incrementarPagina()
+            incrementarPagina();
         }
         if (pagina === quantidadeDePaginas) {
-            decrementarPagina()
+            decrementarPagina();
         }
-    })
+    });
     aElemento2.className = "page-link";
-    if (pagina > 1) {
-        aElemento2.innerHTML = pagina;
-        liElemento2.className = 'active'
-        liElemento1.classList.remove('active')
-    } else {
-        aElemento2.innerHTML = 2
-    }
-
+    aElemento2.innerHTML = (pagina > 1) ? pagina : 2;
     liElemento2.appendChild(aElemento2);
     ulElemento.appendChild(liElemento2);
 
-    //Terceiro botão
     const liElemento3 = document.createElement("li");
     liElemento3.className = "page-item";
     const aElemento3 = document.createElement("button");
     aElemento3.addEventListener('click', () => {
-        botaoPosterior()
-    })
+        botaoPosterior();
+    });
     aElemento3.className = "page-link";
-    if (pagina > 1) {
-        aElemento3.innerHTML = pagina + 1;
-    } else {
-        aElemento3.innerHTML = 3
-    }
+    aElemento3.innerHTML = (pagina > 1) ? pagina + 1 : 3;
     if (pagina === quantidadeDePaginas) {
-        aElemento3.innerHTML = quantidadeDePaginas
-        aElemento2.innerHTML = quantidadeDePaginas - 1
-        aElemento1.innerHTML = quantidadeDePaginas - 2
-        liElemento3.className = 'active'
-        liElemento2.classList.remove('active')
+        aElemento3.innerHTML = quantidadeDePaginas;
+        aElemento2.innerHTML = quantidadeDePaginas - 1;
+        aElemento1.innerHTML = quantidadeDePaginas - 2;
+        liElemento3.className = 'active';
+        liElemento2.classList.remove('active');
     }
     liElemento3.appendChild(aElemento3);
     ulElemento.appendChild(liElemento3);
 
-    // Cria o botão "Próxima"
     const liProximoElemento = document.createElement("li");
     liProximoElemento.className = "page-item";
     const aProximoElemento = document.createElement("button");
     aProximoElemento.addEventListener('click', () => {
-        incrementarPagina()
-    })
-
+        incrementarPagina();
+    });
     if (pagina === quantidadeDePaginas) {
-        liProximoElemento.className = "disabled"
+        liProximoElemento.className = "disabled";
     }
     aProximoElemento.className = "page-link";
     aProximoElemento.innerHTML = "Próxima";
     liProximoElemento.appendChild(aProximoElemento);
     ulElemento.appendChild(liProximoElemento);
 
-    // Adiciona a lista de páginas ao elemento pai
     navElemento.appendChild(ulElemento);
-    containerbotoes.appendChild(navElemento)
+    containerbotoes.appendChild(navElemento);
 }
 
+//cria os cards dos personagens
 function criarElementoCartao(personagem) {
-    //crio o elemento col
     const colElemento = document.createElement('div');
-colElemento.className = 'col-12 col-md-6 col-lg-4 my-3 d-flex justify-content-center';
+    colElemento.className = 'col-12 col-md-6 col-lg-4 my-3 d-flex justify-content-center';
 
+    const cardElemento = document.createElement('div');
+    cardElemento.className = `tamanho_card puff-in-center bg-secondary text-white card my-2 mx-2 ${obterSombraStatusCard(personagem.status)}`;
+    const imagemElemento = document.createElement('img');
+    imagemElemento.src = personagem.image;
+    imagemElemento.className = 'card-img-top imagem_personagem';
+    imagemElemento.alt = 'Imagem do personagem';
 
-const cardElement = document.createElement('div');
-cardElement.className = `tamanho_card puff-in-center bg-secondary text-white card my-2 mx-2 ${obterSombraStatusCard(personagem.status)}`;
-const imageElement = document.createElement('img');
-imageElement.src = personagem.image;
-imageElement.className = 'card-img-top imagem_personagem';
-imageElement.alt = 'Imagem do personagem';
+    const cardBodyElemento = document.createElement('div');
+    cardBodyElemento.className = 'card-body background border border-top-0 border-success rounded-bottom';
 
-const cardBodyElement = document.createElement('div');
-cardBodyElement.className = 'card-body background border border-top-0 border-success rounded-bottom';
+    const tituloElemento = document.createElement('h6');
+    tituloElemento.className = 'card-title fs-5';
+    tituloElemento.textContent = personagem.name;
 
-const titleElement = document.createElement('h6');
-titleElement.className = 'card-title fs-5';
-titleElement.textContent = personagem.name;
+    const statusElemento = document.createElement('p');
+    statusElemento.className = 'card-text fs-6';
+    statusElemento.innerHTML = obterIconeStatus(personagem.status);
 
-const statusElement = document.createElement('p');
-statusElement.className = 'card-text fs-6';
-statusElement.innerHTML = obterIconeStatus(personagem.status);
+    const statusPersonagemElemento = document.createElement('span');
+    statusPersonagemElemento.className = 'fs-6 ms-3';
+    statusPersonagemElemento.innerHTML = `${personagem.status} - ${personagem.species}`;
 
-const statusPersonagemElement = document.createElement('span');
-statusPersonagemElement.className = 'fs-6 ms-3';
-statusPersonagemElement.innerHTML = `${personagem.status} - ${personagem.species}`;
+    const botaoElemento = document.createElement('button');
+    botaoElemento.type = 'button';
+    botaoElemento.addEventListener('click', () => { modalPersonagem(personagem) });
+    botaoElemento.id = 'botao-detalhes';
+    botaoElemento.className = 'btn btn-padrao pulsate-fwd';
+    botaoElemento.setAttribute('data-bs-toggle', 'modal');
+    botaoElemento.setAttribute('data-bs-target', '#modal_detalhes');
+    botaoElemento.style = '--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;';
+    botaoElemento.textContent = 'Mais detalhes';
 
-const buttonElement = document.createElement('button');
-buttonElement.type = 'button';
-buttonElement.addEventListener('click', () => { modalPersonagem(personagem) });
-buttonElement.id = 'botao-detalhes';
-buttonElement.className = 'btn btn-padrao pulsate-fwd';
-buttonElement.setAttribute('data-bs-toggle', 'modal');
-buttonElement.setAttribute('data-bs-target', '#modal_detalhes');
-buttonElement.style = '--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;';
-buttonElement.textContent = 'Mais detalhes';
+    cardBodyElemento.appendChild(tituloElemento);
+    statusElemento.appendChild(statusPersonagemElemento);
+    cardBodyElemento.appendChild(statusElemento);
+    cardBodyElemento.appendChild(botaoElemento);
 
-cardBodyElement.appendChild(titleElement);
-statusElement.appendChild(statusPersonagemElement);
-cardBodyElement.appendChild(statusElement);
-cardBodyElement.appendChild(buttonElement);
+    cardElemento.appendChild(imagemElemento);
+    cardElemento.appendChild(cardBodyElemento);
 
-cardElement.appendChild(imageElement);
-cardElement.appendChild(cardBodyElement); 
-
-colElemento.appendChild(cardElement); 
-return colElemento;
-
+    colElemento.appendChild(cardElemento);
+    return colElemento;
 }
 
+//limpa os cards
 function limparElemento(elemento) {
     while (elemento.firstChild) {
         elemento.removeChild(elemento.firstChild);
     }
 }
 
+//cria a modal com mais informações dos personagens
 function modalPersonagem(personagem) {
-    const mostraModalDetalhes = document.getElementById('detalhes')
+    const mostraModalDetalhes = document.getElementById('detalhes');
     const statusPersonagen = obterIconeStatus(personagem.status);
 
     const modalContent = `
@@ -288,13 +254,14 @@ function modalPersonagem(personagem) {
     mostraModalDetalhes.innerHTML = modalContent;
 }
 
+//mostra o total de pesonagens utilizado no footer
 function mostraTotalPersonagens(quantidade) {
-    const totalPersonagens = document.getElementById("personagen")
-    totalPersonagens.className = 'text-light'
+    const totalPersonagens = document.getElementById("personagen");
+    totalPersonagens.className = 'text-light';
     totalPersonagens.innerHTML = ` ${quantidade} `;
-
 }
 
+//verifica o status do personagem e cria o circulo redondo com a cor do status(vivo, morto, desconhecido)
 function obterIconeStatus(status) {
     switch (status) {
         case 'Alive':
@@ -308,6 +275,7 @@ function obterIconeStatus(status) {
     }
 }
 
+//coloca a sombra atrás dos cards conforme o status do pesonagem (vivo, morto, desconhecido)
 function obterSombraStatusCard(status) {
     switch (status) {
         case 'Alive':
@@ -321,28 +289,30 @@ function obterSombraStatusCard(status) {
     }
 }
 
+//rota para carregar informações sobre os episódios dos funcionários
 async function carregarEpisodios() {
-    const episodioEl = document.getElementById("episodio")
-    episodioEl.classList = 'text-light'
+    const episodioEl = document.getElementById("episodio");
+    episodioEl.classList = 'text-light';
 
     try {
-        const resposta = await instance.get(`/episode`)
-        episodioEl.innerHTML = ` ${resposta.data.info.count} `
+        const resposta = await instance.get(`/episode`);
+        episodioEl.innerHTML = ` ${resposta.data.info.count} `;
     } catch (error) {
         console.log(error);
     }
 }
 
+//rota para carregar a localização dos personagens
 async function carregarLocalizacoes() {
-    const localizacaoEl = document.getElementById("localizacao")
-    localizacaoEl.classList = 'text-light'
+    const localizacaoEl = document.getElementById("localizacao");
+    localizacaoEl.classList = 'text-light';
 
     try {
-        const resposta = await instance.get(`/location`)
-        localizacaoEl.innerHTML = ` ${resposta.data.info.count} `
+        const resposta = await instance.get(`/location`);
+        localizacaoEl.innerHTML = ` ${resposta.data.info.count} `;
     } catch (error) {
         console.log(error);
     }
 }
 
-carregamentoInicialPersonagens()
+carregamentoInicialPersonagens();

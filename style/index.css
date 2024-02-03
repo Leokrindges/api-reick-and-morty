@@ -37,6 +37,7 @@
     width: 10px;
     height: 10px;
 }
+
 /* Bolinha do card que mostra o status do personagem */
 .color_status_morto {
     margin-top: 6px;
@@ -58,7 +59,7 @@
 }
 
 .corfundo {
-    color:#1F2821 ;
+    color: #1F2821;
 }
 
 .cor1 {
@@ -68,6 +69,7 @@
 .titulo {
     color: #105718;
 }
+
 /* tgamanho da imagem do card */
 .imagem_personagem {
     width: 80%;
@@ -82,9 +84,11 @@
 .sombra_card_status_vivo:hover {
     box-shadow: 10px 10px 10px #4D9F4B;
 }
+
 .sombra_card_status_morto:hover {
     box-shadow: 10px 10px 10px red;
 }
+
 .sombra_card_status_desconhecido:hover {
     box-shadow: 10px 10px 10px gray;
 }
@@ -124,7 +128,7 @@
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #4D9F4B;
     --bs-btn-hover-border-color: #4D9F4B;
-    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: #4D9F4B;
     --bs-btn-active-border-color: #4D9F4B;
@@ -139,6 +143,7 @@
     -webkit-animation: roll-in-left 0.6s ease-out alternate;
     animation: roll-in-left 0.6s ease-out alternate;
 }
+
 /* Animação modal */
 @-webkit-keyframes roll-in-left {
     0% {

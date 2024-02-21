@@ -6,7 +6,7 @@ Está aplicação tem como objetivo fazer o consumo de algumas informações da 
 
 ## Como acessar?
 
-Clique **[AQUI]( https://developer.mozilla.org/pt-BR/docs/Web/HTML)** você pode acessar a aplicação e ver seu funcionamento.
+Clique **[AQUI]( https://api-rick-and-morty-eta-gold.vercel.app/)** você pode acessar a aplicação e ver seu funcionamento.
 
 ### Modelo do cabeçalho da tela
 
